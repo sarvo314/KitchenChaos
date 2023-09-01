@@ -1,12 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using Unity.Mathematics;
+using Unity.VisualScripting;
 using UnityEngine;
 //using UnityEngine.Windows;
 
 public class Player : MonoBehaviour
 {
     [SerializeField] private float moveSpeed = 7f;
+    Quaternion rot;
+
+    //[SerializeField][Range(0f, 1f)] float a;
+    //[SerializeField][Range(0f, 1f)] float b;
+    //[SerializeField][Range(0f, 1f)] float c;
+    //the last one is th a part
+    //[SerializeField][Range(0f, 1f)] float d;
+
 
     private void Update()
     {
@@ -36,6 +46,8 @@ public class Player : MonoBehaviour
         float rotateSpeed = 10f;
 
         transform.forward = Vector3.Slerp(transform.forward, movDir, Time.deltaTime * rotateSpeed);
+
+        //transform.rotation = new Quaternion(a, b, c, d);
 
     }
 }
