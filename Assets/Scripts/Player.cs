@@ -17,7 +17,7 @@ public class Player : MonoBehaviour
     //the last one is th a part
     //[SerializeField][Range(0f, 1f)] float d;
 
-
+    private bool isWalking;
     private void Update()
     {
         Vector2 inputVector = new Vector2(0, 0);
@@ -41,6 +41,9 @@ public class Player : MonoBehaviour
         inputVector = inputVector.normalized;
 
         Vector3 movDir = new Vector3(inputVector.x, 0f, inputVector.y);
+
+        isWalking = movDir != Vector3.zero;
+
         transform.position += movDir * moveSpeed * Time.deltaTime;
 
         float rotateSpeed = 10f;
@@ -48,6 +51,10 @@ public class Player : MonoBehaviour
         transform.forward = Vector3.Slerp(transform.forward, movDir, Time.deltaTime * rotateSpeed);
 
         //transform.rotation = new Quaternion(a, b, c, d);
+    }
 
+    public bool IsWalking()
+    {
+        return isWalking;
     }
 }
