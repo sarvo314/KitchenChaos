@@ -8,37 +8,22 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    [SerializeField] private float moveSpeed = 7f;
+    [SerializeField]
+    private float moveSpeed = 7f;
+    [SerializeField] private GameInput gameInput;
     Quaternion rot;
 
-    //[SerializeField][Range(0f, 1f)] float a;
-    //[SerializeField][Range(0f, 1f)] float b;
-    //[SerializeField][Range(0f, 1f)] float c;
-    //the last one is th a part
-    //[SerializeField][Range(0f, 1f)] float d;
+
 
     private bool isWalking;
+    private void Awake()
+    {
+        PlayerInputActions playerInputActions = new PlayerInputActions();
+    }
     private void Update()
     {
-        Vector2 inputVector = new Vector2(0, 0);
 
-        if (Input.GetKey(KeyCode.W))
-        {
-            inputVector.y = +1;
-        }
-        if (Input.GetKey(KeyCode.A))
-        {
-            inputVector.x = -1;
-        }
-        if (Input.GetKey(KeyCode.S))
-        {
-            inputVector.y = -1;
-        }
-        if (Input.GetKey(KeyCode.D))
-        {
-            inputVector.x = +1;
-        }
-        inputVector = inputVector.normalized;
+        Vector2 inputVector = gameInput.GetMovementVectorNormalized();
 
         Vector3 movDir = new Vector3(inputVector.x, 0f, inputVector.y);
 
