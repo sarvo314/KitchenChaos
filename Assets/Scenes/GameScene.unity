@@ -777,7 +777,7 @@ MonoBehaviour:
   moveSpeed: 7
   gameInput: {fileID: 1380024331}
   raycastEnd: {fileID: 1621659396}
-  playerTop: {fileID: 0}
+  playerTop: {fileID: 1438559606}
 --- !u!4 &997137686
 Transform:
   m_ObjectHideFlags: 0

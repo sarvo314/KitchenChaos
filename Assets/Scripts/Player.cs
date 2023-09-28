@@ -14,6 +14,9 @@ public class Player : MonoBehaviour
     [SerializeField] private Transform raycastEnd;
     [SerializeField] private Transform playerTop;
 
+    [SerializeField] private LayerMask counterLayerMask;
+
+    private Vector3 lastInteractDir;
 
 
     private bool isWalking;
@@ -21,9 +24,57 @@ public class Player : MonoBehaviour
     {
         PlayerInputActions playerInputActions = new PlayerInputActions();
     }
+    private void Start()
+    {
+        gameInput.OnInteractAction += GameInput_OnInteractAction;
+    }
+
+    private void GameInput_OnInteractAction(object sender, System.EventArgs e)
+    {
+        Vector2 inputVector = gameInput.GetMovementVectorNormalized();
+
+        Vector3 movDir = new Vector3(inputVector.x, 0f, inputVector.y);
+
+        float interactDistance = 2f;
+
+        if (movDir != Vector3.zero)
+        {
+            lastInteractDir = movDir;
+        }
+
+        Debug.DrawRay(transform.position, movDir * 10);
+        //RayCast takes global direction
+        if (Physics.Raycast(transform.position, lastInteractDir, out RaycastHit hit, interactDistance, counterLayerMask))
+        {
+            if (hit.transform.TryGetComponent<ClearCounter>(out ClearCounter clearCounter))
+            {
+                clearCounter.Interact();
+            }
+
+            Debug.Log(counterLayerMask);
+        }
+        else
+        {
+            Debug.Log("-");
+        }
+    }
+
     private void Update()
     {
+        HandleMovement();
+        HandleInteractions();
+    }
 
+    private void HandleInteractions()
+    {
+
+
+    }
+
+
+
+    private void HandleMovement()
+    {
         Vector2 inputVector = gameInput.GetMovementVectorNormalized();
 
         Vector3 movDir = new Vector3(inputVector.x, 0f, inputVector.y);
@@ -69,8 +120,6 @@ public class Player : MonoBehaviour
         float rotateSpeed = 10f;
 
         transform.forward = Vector3.Slerp(transform.forward, movDir, Time.deltaTime * rotateSpeed);
-
-        //transform.rotation = new Quaternion(a, b, c, d);
     }
 
     public bool IsWalking()
