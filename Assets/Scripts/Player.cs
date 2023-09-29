@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
@@ -8,6 +9,13 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    public event EventHandler<OnSelectedCounterChangedEventArgs> OnSelectedCounterChanged;
+    public class OnSelectedCounterChangedEventArgs : EventArgs
+    {
+        public ClearCounter selectedCounter;
+    }
+
+
     [SerializeField] private float moveSpeed = 7f;
     [SerializeField] private GameInput gameInput;
 
@@ -16,13 +24,24 @@ public class Player : MonoBehaviour
 
     [SerializeField] private LayerMask counterLayerMask;
 
+    public static Player Instance { get; private set; }
+
+    ClearCounter selectedCounter;
+
     private Vector3 lastInteractDir;
+
+
 
 
     private bool isWalking;
     private void Awake()
     {
-        PlayerInputActions playerInputActions = new PlayerInputActions();
+        if (Instance != null)
+        {
+            Debug.LogError("There is more than one player instance");
+        }
+
+        Instance = this;
     }
     private void Start()
     {
@@ -30,6 +49,20 @@ public class Player : MonoBehaviour
     }
 
     private void GameInput_OnInteractAction(object sender, System.EventArgs e)
+    {
+        if (selectedCounter != null)
+        {
+            selectedCounter.Interact();
+        }
+    }
+
+    private void Update()
+    {
+        HandleMovement();
+        HandleInteractions();
+    }
+
+    private void HandleInteractions()
     {
         Vector2 inputVector = gameInput.GetMovementVectorNormalized();
 
@@ -48,26 +81,19 @@ public class Player : MonoBehaviour
         {
             if (hit.transform.TryGetComponent<ClearCounter>(out ClearCounter clearCounter))
             {
-                clearCounter.Interact();
+                Debug.Log("We select a counter");
+                SetSelectedCounter(clearCounter);
+            }
+            else
+            {
+                SetSelectedCounter(null);
             }
 
-            Debug.Log(counterLayerMask);
         }
         else
         {
-            Debug.Log("-");
+            SetSelectedCounter(null);
         }
-    }
-
-    private void Update()
-    {
-        HandleMovement();
-        HandleInteractions();
-    }
-
-    private void HandleInteractions()
-    {
-
 
     }
 
@@ -125,5 +151,13 @@ public class Player : MonoBehaviour
     public bool IsWalking()
     {
         return isWalking;
+    }
+    private void SetSelectedCounter(ClearCounter selectedCounter)
+    {
+        this.selectedCounter = selectedCounter;
+        OnSelectedCounterChanged?.Invoke(this, new OnSelectedCounterChangedEventArgs
+        {
+            selectedCounter = selectedCounter
+        });
     }
 }
