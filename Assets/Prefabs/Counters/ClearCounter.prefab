@@ -95,12 +95,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6369056538245518973, guid: 0004cb1e11ad014419b943c7da960724,
         type: 3}
+      propertyPath: baseCounter
+      value: 
+      objectReference: {fileID: 3723330961775283667}
+    - target: {fileID: 6369056538245518973, guid: 0004cb1e11ad014419b943c7da960724,
+        type: 3}
       propertyPath: clearCounter
       value: 
       objectReference: {fileID: 3723330961775283667}
     - target: {fileID: 6369056538245518973, guid: 0004cb1e11ad014419b943c7da960724,
         type: 3}
       propertyPath: visualGameObject
+      value: 
+      objectReference: {fileID: 9194747272181226653}
+    - target: {fileID: 6369056538245518973, guid: 0004cb1e11ad014419b943c7da960724,
+        type: 3}
+      propertyPath: visualGameObject.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6369056538245518973, guid: 0004cb1e11ad014419b943c7da960724,
+        type: 3}
+      propertyPath: visualGameObject.Array.data[0]
       value: 
       objectReference: {fileID: 9194747272181226653}
     - target: {fileID: 8489276541531669327, guid: 0004cb1e11ad014419b943c7da960724,
