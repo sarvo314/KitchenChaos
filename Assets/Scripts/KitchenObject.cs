@@ -6,23 +6,23 @@ public class KitchenObject : MonoBehaviour
 {
     [SerializeField] KitchenObjectSO kitchenObjectSO;
 
-    private ClearCounter clearCounter;
+    private IKitchenObjectParent kitchenObjectParent;
 
     public KitchenObjectSO GetKitchenObjectSO()
     {
         return kitchenObjectSO;
     }
 
-    public void SetClearCounter(ClearCounter clearCounter)
+    public void SetKitchenObjectParent(IKitchenObjectParent clearCounter)
     {
         //as classes are reference type we can do this
-        ClearCounter previousClearCounter = this.clearCounter;
+        IKitchenObjectParent previousClearCounter = this.kitchenObjectParent;
         if (previousClearCounter != null)
         {
             previousClearCounter.ClearKitchenObject();
         }
         //set this objects counter as the new counter that was passed through parameter
-        this.clearCounter = clearCounter;
+        this.kitchenObjectParent = clearCounter;
 
         if (clearCounter.HasKitchenObject())
         {
@@ -34,9 +34,8 @@ public class KitchenObject : MonoBehaviour
         transform.localPosition = Vector3.zero;
     }
 
-    public ClearCounter GetClearCounter()
+    public IKitchenObjectParent GetKitchenObjectParent()
     {
-        return clearCounter;
+        return kitchenObjectParent;
     }
-
 }
