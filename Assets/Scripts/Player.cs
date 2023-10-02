@@ -47,6 +47,15 @@ public class Player : MonoBehaviour, IKitchenObjectParent
     private void Start()
     {
         gameInput.OnInteractAction += GameInput_OnInteractAction;
+        gameInput.OnInteractAlternateAction += GameInput_OnInteractAlternateAction;
+    }
+
+    private void GameInput_OnInteractAlternateAction(object sender, EventArgs e)
+    {
+        if (selectedCounter != null)
+        {
+            selectedCounter.InteractAlternate(this);
+        }
     }
 
     private void GameInput_OnInteractAction(object sender, System.EventArgs e)
@@ -115,7 +124,7 @@ public class Player : MonoBehaviour, IKitchenObjectParent
         {
             //check in x
             Vector3 movDirX = new Vector3(movDir.x, 0f, 0f);
-            canMove = !Physics.CapsuleCast(transform.position, playerTop.position, playerRad, movDirX, moveDistance);
+            canMove = movDirX.x != 0 && !Physics.CapsuleCast(transform.position, playerTop.position, playerRad, movDirX, moveDistance);
             if (canMove)
             {
                 movDir = movDirX;
@@ -123,7 +132,7 @@ public class Player : MonoBehaviour, IKitchenObjectParent
             else
             {
                 Vector3 movDirZ = new Vector3(0f, 0f, movDir.z);
-                canMove = !Physics.CapsuleCast(transform.position, playerTop.position, playerRad, movDirZ, moveDistance);
+                canMove = movDirX.x != 0 && !Physics.CapsuleCast(transform.position, playerTop.position, playerRad, movDirZ, moveDistance);
 
                 if (canMove)
                 {
@@ -141,7 +150,7 @@ public class Player : MonoBehaviour, IKitchenObjectParent
         {
             transform.position += movDir * moveDistance;
         }
-
+        Debug.Log(movDir);
 
         isWalking = movDir != Vector3.zero;
         float rotateSpeed = 10f;
