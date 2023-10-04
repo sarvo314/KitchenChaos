@@ -44,6 +44,7 @@ public class Player : MonoBehaviour, IKitchenObjectParent
 
         Instance = this;
     }
+
     private void Start()
     {
         gameInput.OnInteractAction += GameInput_OnInteractAction;
